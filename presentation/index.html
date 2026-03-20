@@ -225,9 +225,9 @@ todoapp/
             <div class="toc-item" onclick="goToSlide(5)"><span class="toc-number">1</span><span class="toc-name">Prerequisites</span></div>
             <div class="toc-item" onclick="goToSlide(10)"><span class="toc-number">2</span><span class="toc-name">Better Prompting &mdash; Low</span></div>
             <div class="toc-item" onclick="goToSlide(18)"><span class="toc-number">3</span><span class="toc-name">Project Memory &mdash; Medium</span></div>
-            <div class="toc-item" onclick="goToSlide(25)"><span class="toc-number">4</span><span class="toc-name">Structured Workflows &mdash; Medium</span></div>
-            <div class="toc-item" onclick="goToSlide(29)"><span class="toc-number">5</span><span class="toc-name">Domain Knowledge &mdash; High</span></div>
-            <div class="toc-item" onclick="goToSlide(34)"><span class="toc-number">6</span><span class="toc-name">Agentic Engineering &mdash; High</span></div>
+            <div class="toc-item" onclick="goToSlide(26)"><span class="toc-number">4</span><span class="toc-name">Structured Workflows &mdash; Medium</span></div>
+            <div class="toc-item" onclick="goToSlide(30)"><span class="toc-number">5</span><span class="toc-name">Domain Knowledge &mdash; High</span></div>
+            <div class="toc-item" onclick="goToSlide(37)"><span class="toc-number">6</span><span class="toc-name">Agentic Engineering &mdash; High</span></div>
         </div>
     </div>
 
@@ -672,8 +672,41 @@ When writing tests for the backend:
         </div>
     </div>
 
-    <!-- Slide 24: Memory Best Practices -->
+    <!-- Slide 24: Monorepo CLAUDE.md Loading -->
     <div class="slide" data-slide="24">
+        <h1>CLAUDE.md Loading in Monorepos</h1>
+        <div class="trigger-box">
+            <h4>Two Loading Mechanisms</h4>
+            <p>Claude Code uses <strong>ancestor loading</strong> (upward at startup) and <strong>descendant lazy loading</strong> (downward on demand).</p>
+        </div>
+        <div class="two-col">
+            <div class="col-card good">
+                <h4>Ancestor Loading (at startup)</h4>
+                <div class="code-block"><span class="comment"># cd /todoapp/frontend && claude</span>
+~/.claude/CLAUDE.md    <span class="comment"># loaded</span>
+/todoapp/CLAUDE.md     <span class="comment"># loaded</span>
+/todoapp/frontend/CLAUDE.md <span class="comment"># loaded</span></div>
+                <p style="margin-top: 8px;">All CLAUDE.md files from <code>cwd</code> up to <code>/</code> are loaded immediately at startup.</p>
+            </div>
+            <div class="col-card">
+                <h4>Descendant Lazy Loading</h4>
+                <div class="code-block"><span class="comment"># cd /todoapp && claude</span>
+/todoapp/frontend/CLAUDE.md  <span class="comment"># NOT loaded at start</span>
+/todoapp/backend/CLAUDE.md   <span class="comment"># NOT loaded at start</span>
+
+<span class="comment"># Only loaded when Claude reads</span>
+<span class="comment"># a file inside that subdirectory</span></div>
+                <p style="margin-top: 8px;">Sibling directories never load each other.</p>
+            </div>
+        </div>
+        <div class="warning-box">
+            <h4>Monorepo Strategy</h4>
+            <p>Put <strong>shared conventions</strong> in the root CLAUDE.md. Put <strong>component-specific instructions</strong> in each subdirectory's CLAUDE.md — they'll lazy-load without polluting sibling contexts.</p>
+        </div>
+    </div>
+
+    <!-- Slide 25: Memory Best Practices -->
+    <div class="slide" data-slide="25">
         <h1>Memory Best Practices</h1>
         <div class="use-cases">
             <div class="use-case-item"><span class="use-case-icon">&#128207;</span><div class="use-case-text"><strong>CLAUDE.md under 150 lines</strong><span>Brief, focused, high-signal instructions</span></div></div>
@@ -685,18 +718,18 @@ When writing tests for the backend:
     </div>
 
     <!-- ============================================================ -->
-    <!-- PART 4: STRUCTURED WORKFLOWS (Slides 25-28, 40% -> 50%)     -->
+    <!-- PART 4: STRUCTURED WORKFLOWS (Slides 26-29, 40% -> 50%)     -->
     <!-- ============================================================ -->
 
-    <!-- Slide 25: Section Divider - Structured Workflows -->
-    <div class="slide section-slide" data-slide="25">
+    <!-- Slide 26: Section Divider - Structured Workflows -->
+    <div class="slide section-slide" data-slide="26">
         <p class="section-number">Part 4</p>
         <h1>Structured Workflows</h1>
         <p class="section-desc">Level: Medium &mdash; systematic approaches that prevent wasted effort.</p>
     </div>
 
-    <!-- Slide 26: Task Lists -->
-    <div class="slide" data-slide="26">
+    <!-- Slide 27: Task Lists -->
+    <div class="slide" data-slide="27">
         <h1>Task Lists</h1>
         <p>For complex tasks, Claude creates a <strong>task list</strong> to track progress:</p>
         <div class="code-block"><span class="cmd">&gt;</span> Add user authentication to the TodoApp:
@@ -712,8 +745,8 @@ When writing tests for the backend:
         </div>
     </div>
 
-    <!-- Slide 27: /model Selection -->
-    <div class="slide" data-slide="27">
+    <!-- Slide 28: /model Selection -->
+    <div class="slide" data-slide="28">
         <h1>/model &mdash; Model Selection</h1>
         <div class="how-to-trigger">
             <h4>Try This</h4>
@@ -731,8 +764,8 @@ When writing tests for the backend:
         </div>
     </div>
 
-    <!-- Slide 28: Workflow Best Practices -->
-    <div class="slide" data-slide="28">
+    <!-- Slide 29: Workflow Best Practices -->
+    <div class="slide" data-slide="29">
         <h1>Workflow Best Practices</h1>
         <div class="use-cases">
             <div class="use-case-item"><span class="use-case-icon">&#128506;</span><div class="use-case-text"><strong>Always start with plan mode</strong><span>For any non-trivial task</span></div></div>
@@ -744,18 +777,18 @@ When writing tests for the backend:
     </div>
 
     <!-- ============================================================ -->
-    <!-- PART 5: DOMAIN KNOWLEDGE (Slides 29-33, 50% -> 65%)         -->
+    <!-- PART 5: DOMAIN KNOWLEDGE (Slides 30-36, 50% -> 65%)         -->
     <!-- ============================================================ -->
 
-    <!-- Slide 29: Section Divider - Domain Knowledge -->
-    <div class="slide section-slide" data-slide="29" data-level="high">
+    <!-- Slide 30: Section Divider - Domain Knowledge -->
+    <div class="slide section-slide" data-slide="30" data-level="high">
         <p class="section-number">Part 5</p>
         <h1>Domain Knowledge</h1>
         <p class="section-desc">Level: High &mdash; reusable knowledge that Claude loads on-demand.</p>
     </div>
 
-    <!-- Slide 30: What Are Skills -->
-    <div class="slide" data-slide="30">
+    <!-- Slide 31: What Are Skills -->
+    <div class="slide" data-slide="31">
         <h1>What Are Skills?</h1>
         <div class="trigger-box">
             <h4>Key Concept</h4>
@@ -773,8 +806,8 @@ When writing tests for the backend:
         </div>
     </div>
 
-    <!-- Slide 31: Creating Skills - TodoApp -->
-    <div class="slide" data-slide="31">
+    <!-- Slide 32: Creating Skills - TodoApp -->
+    <div class="slide" data-slide="32">
         <h1>Creating Skills: TodoApp Frontend</h1>
         <h3>Frontend Conventions Skill</h3>
         <div class="code-block"><span class="comment"># .claude/skills/frontend-conventions/SKILL.md</span>
@@ -804,8 +837,8 @@ When creating or modifying frontend components:
 - Base URL: process.env.NEXT_PUBLIC_API_URL</div>
     </div>
 
-    <!-- Slide 32: Skill Frontmatter & Invocation -->
-    <div class="slide" data-slide="32">
+    <!-- Slide 33: Skill Frontmatter & Invocation -->
+    <div class="slide" data-slide="33">
         <h1>Skill Frontmatter &amp; Invocation</h1>
         <h3>Frontmatter Options</h3>
         <div class="use-cases">
@@ -830,8 +863,8 @@ When creating or modifying frontend components:
 <span class="key">context</span>: <span class="string">fork</span></div>
     </div>
 
-    <!-- Slide 33: Skills Summary -->
-    <div class="slide" data-slide="33">
+    <!-- Slide 34: Skills Summary -->
+    <div class="slide" data-slide="34">
         <h1>Skills Summary</h1>
         <div class="info-grid">
             <div class="info-card">
@@ -857,19 +890,56 @@ When creating or modifying frontend components:
       error-handling.md   <span class="comment"># Supporting file (optional)</span></div>
     </div>
 
+    <!-- Slide 35: All 10 Skill Frontmatter Fields -->
+    <div class="slide" data-slide="35">
+        <h1>All 10 Skill Frontmatter Fields</h1>
+        <div class="use-cases">
+            <div class="use-case-item"><span class="use-case-icon">&#128220;</span><div class="use-case-text"><strong>name</strong><span>Display name and <code>/slash-command</code> identifier. Defaults to directory name if omitted</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128221;</span><div class="use-case-text"><strong>description</strong><span>What the skill does. Used for autocomplete and Claude auto-discovery</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128309;</span><div class="use-case-text"><strong>argument-hint</strong><span>Hint shown during autocomplete, e.g. <code>[issue-number]</code> or <code>[filename]</code></span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128683;</span><div class="use-case-text"><strong>disable-model-invocation</strong><span>Set <code>true</code> to prevent Claude from automatically invoking this skill</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128065;</span><div class="use-case-text"><strong>user-invocable</strong><span>Set <code>false</code> to hide from <code>/</code> menu — background knowledge only, for agent preloading</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128295;</span><div class="use-case-text"><strong>allowed-tools</strong><span>Tools allowed without permission prompts when this skill is active</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#129302;</span><div class="use-case-text"><strong>model</strong><span>Model to use when this skill runs: <code>haiku</code>, <code>sonnet</code>, or <code>opus</code></span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128257;</span><div class="use-case-text"><strong>context</strong><span>Set to <code>fork</code> to run the skill in an isolated subagent context</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#129302;</span><div class="use-case-text"><strong>agent</strong><span>Subagent type when <code>context: fork</code> is set (default: <code>general-purpose</code>)</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128064;</span><div class="use-case-text"><strong>hooks</strong><span>Lifecycle hooks scoped to this skill (PreToolUse, PostToolUse, Stop, etc.)</span></div></div>
+        </div>
+    </div>
+
+    <!-- Slide 36: 5 Official Bundled Skills -->
+    <div class="slide" data-slide="36">
+        <h1>5 Official Bundled Skills</h1>
+        <div class="trigger-box">
+            <h4>Bundled Skills</h4>
+            <p>These skills ship with Claude Code and are available immediately. Invoke them as slash commands or they trigger automatically when relevant.</p>
+        </div>
+        <div class="use-cases">
+            <div class="use-case-item"><span class="use-case-icon">&#9999;</span><div class="use-case-text"><strong>/simplify</strong><span>Review changed code for reuse, quality, and efficiency — refactors to eliminate duplication</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128260;</span><div class="use-case-text"><strong>/batch</strong><span>Run commands across multiple files in bulk</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128030;</span><div class="use-case-text"><strong>/debug</strong><span>Debug failing commands or code issues</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128260;</span><div class="use-case-text"><strong>/loop</strong><span>Run a prompt or slash command on a recurring interval (up to 3 days)</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#129302;</span><div class="use-case-text"><strong>/claude-api</strong><span>Build apps with the Claude API or Anthropic SDK — auto-triggers on <code>anthropic</code> imports</span></div></div>
+        </div>
+        <div class="how-to-trigger">
+            <h4>More Skills</h4>
+            <p>Find community-maintained installable skills at the <strong>Official Skills Repository</strong> on GitHub: <code>github.com/anthropics/skills</code></p>
+        </div>
+    </div>
+
     <!-- ============================================================ -->
-    <!-- PART 6: AGENTIC ENGINEERING (Slides 34-46, 65% -> 75%)      -->
+    <!-- PART 6: AGENTIC ENGINEERING (Slides 37-50, 65% -> 75%)      -->
     <!-- ============================================================ -->
 
-    <!-- Slide 34: Section Divider - Agentic Engineering -->
-    <div class="slide section-slide" data-slide="34" data-level="high">
+    <!-- Slide 37: Section Divider - Agentic Engineering -->
+    <div class="slide section-slide" data-slide="37" data-level="high">
         <p class="section-number">Part 6</p>
         <h1>Agentic Engineering</h1>
         <p class="section-desc">Level: High &mdash; custom agents that know your codebase and follow your patterns.</p>
     </div>
 
-    <!-- Slide 35: What Are Agents -->
-    <div class="slide" data-slide="35">
+    <!-- Slide 38: What Are Agents -->
+    <div class="slide" data-slide="38">
         <h1>What Are Agents?</h1>
         <div class="trigger-box">
             <h4>Key Concept</h4>
@@ -893,8 +963,8 @@ When creating or modifying frontend components:
         </div>
     </div>
 
-    <!-- Slide 36: Frontend Engineer Agent -->
-    <div class="slide" data-slide="36">
+    <!-- Slide 39: Frontend Engineer Agent -->
+    <div class="slide" data-slide="39">
         <h1>Frontend Engineer Agent</h1>
         <div class="two-col">
             <div class="col-card bad">
@@ -931,8 +1001,8 @@ Use the existing API client in lib/api.ts.
 Follow TodoList.tsx as your reference component.</div>
     </div>
 
-    <!-- Slide 37: Backend Engineer Agent -->
-    <div class="slide" data-slide="37">
+    <!-- Slide 40: Backend Engineer Agent -->
+    <div class="slide" data-slide="40">
         <h1>Backend Engineer Agent</h1>
         <div class="two-col">
             <div class="col-card bad">
@@ -967,19 +1037,22 @@ Always add pytest tests for new endpoints.
 Use Pydantic schemas for request/response validation.</div>
     </div>
 
-    <!-- Slide 38: Agent Frontmatter -->
-    <div class="slide" data-slide="38">
+    <!-- Slide 41: Agent Frontmatter -->
+    <div class="slide" data-slide="41">
         <h1>Agent Frontmatter</h1>
         <div class="code-block"><span class="comment"># .claude/agents/code-reviewer.md</span>
 ---
 <span class="key">name</span>: <span class="string">code-reviewer</span>
 <span class="key">description</span>: <span class="string">Reviews code for quality and best practices</span>
 <span class="key">tools</span>: <span class="string">Read, Grep, Glob</span>
+<span class="key">disallowedTools</span>: <span class="string">Bash</span>
 <span class="key">model</span>: <span class="string">sonnet</span>
 <span class="key">color</span>: <span class="string">green</span>
 <span class="key">skills</span>:
   - code-review
 <span class="key">memory</span>: <span class="string">user</span>
+<span class="key">permissionMode</span>: <span class="string">acceptEdits</span>
+<span class="key">maxTurns</span>: <span class="string">20</span>
 ---
 
 You are a code reviewer. Check for security issues,
@@ -987,14 +1060,47 @@ performance problems, and suggest improvements.
 Review your memory for patterns you've seen before.</div>
         <h3>Key Fields</h3>
         <div class="use-cases">
-            <div class="use-case-item"><span class="use-case-icon">&#128295;</span><div class="use-case-text"><strong>tools</strong><span>What the agent can do (Read, Write, Edit, Bash, etc.)</span></div></div>
-            <div class="use-case-item"><span class="use-case-icon">&#128218;</span><div class="use-case-text"><strong>skills</strong><span>Knowledge preloaded at startup</span></div></div>
-            <div class="use-case-item"><span class="use-case-icon">&#129504;</span><div class="use-case-text"><strong>memory</strong><span>Persistent learning across sessions (user/project/local)</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128295;</span><div class="use-case-text"><strong>tools</strong><span>Allowlist of tools (inherits all if omitted). Supports <code>Agent(agent_type)</code> syntax</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128218;</span><div class="use-case-text"><strong>skills</strong><span>Knowledge preloaded at agent startup (full content injected)</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#129504;</span><div class="use-case-text"><strong>memory</strong><span>Persistent learning across sessions: <code>user</code>, <code>project</code>, or <code>local</code></span></div></div>
         </div>
     </div>
 
-    <!-- Slide 39: Agent Tools & Skills -->
-    <div class="slide" data-slide="39">
+    <!-- Slide 42: All 14 Agent Frontmatter Fields -->
+    <div class="slide" data-slide="42">
+        <h1>All 14 Agent Frontmatter Fields</h1>
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>Identity</h4>
+                <p><code>name</code> &mdash; Unique identifier (required)</p>
+                <p><code>description</code> &mdash; When to invoke; use "PROACTIVELY" for auto-invocation</p>
+                <p><code>color</code> &mdash; CLI output color (green, magenta, etc.)</p>
+            </div>
+            <div class="info-card">
+                <h4>Execution</h4>
+                <p><code>model</code> &mdash; <code>haiku</code>, <code>sonnet</code>, <code>opus</code>, or <code>inherit</code></p>
+                <p><code>maxTurns</code> &mdash; Max agentic turns before stopping</p>
+                <p><code>permissionMode</code> &mdash; <code>default</code>, <code>acceptEdits</code>, <code>dontAsk</code>, <code>bypassPermissions</code>, <code>plan</code></p>
+            </div>
+            <div class="info-card">
+                <h4>Tools &amp; Knowledge</h4>
+                <p><code>tools</code> &mdash; Allowlist (all if omitted). Supports <code>Agent(type)</code></p>
+                <p><code>disallowedTools</code> &mdash; Deny list, removed from inherited set</p>
+                <p><code>skills</code> &mdash; Knowledge preloaded at startup</p>
+                <p><code>mcpServers</code> &mdash; MCP servers for this agent</p>
+            </div>
+            <div class="info-card">
+                <h4>Advanced</h4>
+                <p><code>memory</code> &mdash; <code>user</code>, <code>project</code>, or <code>local</code></p>
+                <p><code>hooks</code> &mdash; Lifecycle hooks scoped to this agent</p>
+                <p><code>background</code> &mdash; Always run as background task</p>
+                <p><code>isolation</code> &mdash; Set <code>worktree</code> for temp git worktree</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 43: Agent Tools & Skills -->
+    <div class="slide" data-slide="43">
         <h1>Agent Tools &amp; Skills</h1>
         <h3>Restricting Tools</h3>
         <div class="code-block"><span class="comment"># Read-only agent &mdash; can't modify anything</span>
@@ -1017,8 +1123,8 @@ Review your memory for patterns you've seen before.</div>
         </div>
     </div>
 
-    <!-- Slide 40: Subagents -->
-    <div class="slide" data-slide="40">
+    <!-- Slide 44: Subagents -->
+    <div class="slide" data-slide="44">
         <h1>Subagents via Task Tool</h1>
         <div class="trigger-box">
             <h4>Key Concept</h4>
@@ -1034,15 +1140,34 @@ Task(
 )</div>
         <h3>Built-in Subagent Types</h3>
         <p>
+            <span class="matcher-tag">general-purpose</span>
             <span class="matcher-tag">Explore</span>
             <span class="matcher-tag">Plan</span>
             <span class="matcher-tag">Bash</span>
-            <span class="matcher-tag">Your Custom Agents</span>
+            <span class="matcher-tag">statusline-setup</span>
+            <span class="matcher-tag">claude-code-guide</span>
         </p>
     </div>
 
-    <!-- Slide 41: Commands & Orchestration -->
-    <div class="slide" data-slide="41">
+    <!-- Slide 45: 6 Built-in Agent Types -->
+    <div class="slide" data-slide="45">
+        <h1>6 Built-in Agent Types</h1>
+        <div class="trigger-box">
+            <h4>Official Built-in Agents</h4>
+            <p>These agent types are always available — no definition file needed. Use them with the <code>Agent(subagent_type=...)</code> call or via CLI <code>--agent</code> flag.</p>
+        </div>
+        <div class="use-cases">
+            <div class="use-case-item"><span class="use-case-icon">&#129302;</span><div class="use-case-text"><strong>general-purpose</strong> &mdash; inherit model, all tools<span>Complex multi-step tasks — the default agent type for research, code search, and autonomous work</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128270;</span><div class="use-case-text"><strong>Explore</strong> &mdash; haiku, read-only (no Write/Edit)<span>Fast codebase search — optimized for finding files, searching code, answering questions</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128506;</span><div class="use-case-text"><strong>Plan</strong> &mdash; inherit, read-only<span>Pre-planning research — explores codebase and designs approaches before writing code</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128421;</span><div class="use-case-text"><strong>Bash</strong> &mdash; inherit, Bash only<span>Running terminal commands in a separate context</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128200;</span><div class="use-case-text"><strong>statusline-setup</strong> &mdash; sonnet, Read + Edit<span>Configures the user's Claude Code status line setting</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128214;</span><div class="use-case-text"><strong>claude-code-guide</strong> &mdash; haiku, Read/Glob/Grep/WebFetch/WebSearch<span>Answers questions about Claude Code features, Agent SDK, and Claude API</span></div></div>
+        </div>
+    </div>
+
+    <!-- Slide 46: Commands & Orchestration -->
+    <div class="slide" data-slide="46">
         <h1>Commands &amp; Orchestration</h1>
         <p>Commands are the entry points for complex workflows &mdash; the <strong>Command &rarr; Agent &rarr; Skills</strong> pattern:</p>
         <div class="code-block"><span class="comment"># .claude/commands/add-feature.md</span>
@@ -1066,8 +1191,8 @@ Task(
         </div>
     </div>
 
-    <!-- Slide 42: Hooks + MCP -->
-    <div class="slide" data-slide="42">
+    <!-- Slide 47: Hooks + MCP -->
+    <div class="slide" data-slide="47">
         <h1>Hooks &amp; MCP Servers</h1>
         <div class="two-col">
             <div class="col-card">
@@ -1090,8 +1215,8 @@ Task(
         </div>
     </div>
 
-    <!-- Slide 43: Full Architecture -->
-    <div class="slide" data-slide="43">
+    <!-- Slide 48: Full Architecture -->
+    <div class="slide" data-slide="48">
         <h1>Command &rarr; Agent &rarr; Skills</h1>
         <p>The full architecture pattern for complex workflows:</p>
         <div class="code-block"><span class="comment">+-----------------------------------------------+</span>
@@ -1112,15 +1237,15 @@ Task(
         </div>
     </div>
 
-    <!-- Slide 44: The High Level Slide -->
-    <div class="slide section-slide" data-slide="44">
+    <!-- Slide 49: The High Level Slide -->
+    <div class="slide section-slide" data-slide="49">
         <p class="celebration">&#127881;</p>
         <h1>High &mdash; Agentic Engineering</h1>
         <p class="section-desc">Your TodoApp now has: CLAUDE.md for project context, Rules for path-scoped conventions, Skills for domain knowledge, Agents for consistent execution, Commands for orchestrated workflows, Hooks for lifecycle automation, and MCP servers for external tools.</p>
     </div>
 
-    <!-- Slide 45: Agent Memory -->
-    <div class="slide" data-slide="45">
+    <!-- Slide 50: Agent Memory -->
+    <div class="slide" data-slide="50">
         <h1>Agent Memory</h1>
         <div class="trigger-box">
             <h4>Key Feature</h4>
@@ -1139,8 +1264,8 @@ Task(
         </p>
     </div>
 
-    <!-- Slide 46: Agents Summary -->
-    <div class="slide" data-slide="46">
+    <!-- Slide 51: Agents Summary -->
+    <div class="slide" data-slide="51">
         <h1>Agents Summary</h1>
         <div class="info-grid">
             <div class="info-card">
@@ -1174,15 +1299,15 @@ Task(
     <!-- APPENDIX: REFERENCE (Slides 47+, no weight)                  -->
     <!-- ============================================================ -->
 
-    <!-- Slide 47: Section Divider - Appendix -->
-    <div class="slide section-slide" data-slide="47">
+    <!-- Slide 52: Section Divider - Appendix -->
+    <div class="slide section-slide" data-slide="52">
         <p class="section-number">Appendix</p>
         <h1>Reference</h1>
         <p class="section-desc">Command references, workflows, settings, and customization options.</p>
     </div>
 
-    <!-- Slide 48: How Claude Uses Tools -->
-    <div class="slide" data-slide="48">
+    <!-- Slide 53: How Claude Uses Tools -->
+    <div class="slide" data-slide="53">
         <h1>How Claude Uses Tools</h1>
         <p>Claude Code doesn't just generate text &mdash; it <strong>takes actions</strong> using tools:</p>
         <div class="info-grid">
@@ -1209,8 +1334,8 @@ Task(
         </div>
     </div>
 
-    <!-- Slide 49: File Operations -->
-    <div class="slide" data-slide="49">
+    <!-- Slide 54: File Operations -->
+    <div class="slide" data-slide="54">
         <h1>File Operations</h1>
         <h3>Reading Files</h3>
         <div class="code-block"><span class="cmd">&gt;</span> Read the package.json file</div>
@@ -1224,8 +1349,8 @@ Task(
         </div>
     </div>
 
-    <!-- Slide 50: Bash & Search -->
-    <div class="slide" data-slide="50">
+    <!-- Slide 55: Bash & Search -->
+    <div class="slide" data-slide="55">
         <h1>Bash Commands &amp; Search</h1>
         <h3>Running Commands</h3>
         <div class="code-block"><span class="cmd">&gt;</span> Run the test suite: npm test
@@ -1241,8 +1366,8 @@ Task(
         </div>
     </div>
 
-    <!-- Slide 51: /help -->
-    <div class="slide" data-slide="51">
+    <!-- Slide 56: /help -->
+    <div class="slide" data-slide="56">
         <h1>/help</h1>
         <div class="how-to-trigger">
             <h4>Try This</h4>
@@ -1267,8 +1392,8 @@ Task(
         </div>
     </div>
 
-    <!-- Slide 52: Effort Level -->
-    <div class="slide" data-slide="52">
+    <!-- Slide 57: Effort Level -->
+    <div class="slide" data-slide="57">
         <h1>/model &mdash; Effort Level</h1>
         <p>When Opus 4.6 is selected, you can adjust the <strong>effort level</strong>:</p>
         <div class="how-to-trigger">
@@ -1282,8 +1407,8 @@ Task(
         </div>
     </div>
 
-    <!-- Slide 53: /fast -->
-    <div class="slide" data-slide="53">
+    <!-- Slide 58: /fast -->
+    <div class="slide" data-slide="58">
         <h1>/fast &mdash; Faster Output</h1>
         <div class="how-to-trigger">
             <h4>Try This</h4>
@@ -1295,8 +1420,8 @@ Task(
         </div>
     </div>
 
-    <!-- Slide 54: /context & /cost -->
-    <div class="slide" data-slide="54">
+    <!-- Slide 59: /context & /cost -->
+    <div class="slide" data-slide="59">
         <h1>/context &amp; /cost</h1>
         <div class="two-col">
             <div class="col-card">
@@ -1312,8 +1437,8 @@ Task(
         </div>
     </div>
 
-    <!-- Slide 55: /clear & /rewind -->
-    <div class="slide" data-slide="55">
+    <!-- Slide 60: /clear & /rewind -->
+    <div class="slide" data-slide="60">
         <h1>/clear &amp; /rewind</h1>
         <div class="two-col">
             <div class="col-card">
@@ -1333,8 +1458,8 @@ Task(
         </div>
     </div>
 
-    <!-- Slide 56: /resume -->
-    <div class="slide" data-slide="56">
+    <!-- Slide 61: /resume -->
+    <div class="slide" data-slide="61">
         <h1>/resume &mdash; Resume Sessions</h1>
         <div class="how-to-trigger">
             <h4>Try This</h4>
@@ -1347,8 +1472,8 @@ Task(
         <p>Opens a session picker showing your recent conversations. Select one to continue where you left off.</p>
     </div>
 
-    <!-- Slide 57: /doctor -->
-    <div class="slide" data-slide="57">
+    <!-- Slide 62: /doctor -->
+    <div class="slide" data-slide="62">
         <h1>/doctor &mdash; Diagnostics</h1>
         <div class="how-to-trigger">
             <h4>Try This</h4>
@@ -1363,8 +1488,8 @@ Task(
         </div>
     </div>
 
-    <!-- Slide 58: /config -->
-    <div class="slide" data-slide="58">
+    <!-- Slide 63: /config -->
+    <div class="slide" data-slide="63">
         <h1>/config &mdash; Configuration</h1>
         <div class="how-to-trigger">
             <h4>Try This</h4>
@@ -1379,8 +1504,8 @@ Task(
         </div>
     </div>
 
-    <!-- Slide 59: /permissions -->
-    <div class="slide" data-slide="59">
+    <!-- Slide 64: /permissions -->
+    <div class="slide" data-slide="64">
         <h1>/permissions &mdash; Tool Access Control</h1>
         <div class="how-to-trigger">
             <h4>Try This</h4>
@@ -1397,8 +1522,8 @@ Bash(rm -rf *)         <span class="comment">// Block destructive commands</span
 Read(.env)             <span class="comment">// Block reading secrets</span></div>
     </div>
 
-    <!-- Slide 60: /sandbox -->
-    <div class="slide" data-slide="60">
+    <!-- Slide 65: /sandbox -->
+    <div class="slide" data-slide="65">
         <h1>/sandbox &mdash; Sandboxing</h1>
         <div class="how-to-trigger">
             <h4>Try This</h4>
@@ -1410,8 +1535,8 @@ Read(.env)             <span class="comment">// Block reading secrets</span></di
         </div>
     </div>
 
-    <!-- Slide 61: Commands Cheat Sheet -->
-    <div class="slide" data-slide="61">
+    <!-- Slide 66: Commands Cheat Sheet -->
+    <div class="slide" data-slide="66">
         <h1>Commands Cheat Sheet</h1>
         <div class="info-grid">
             <div class="info-card">
@@ -1445,8 +1570,8 @@ Read(.env)             <span class="comment">// Block reading secrets</span></di
         </div>
     </div>
 
-    <!-- Slide 62: Commit Workflow -->
-    <div class="slide" data-slide="62">
+    <!-- Slide 67: Commit Workflow -->
+    <div class="slide" data-slide="67">
         <h1>The Commit Workflow</h1>
         <div class="how-to-trigger">
             <h4>Ask Claude to Commit</h4>
@@ -1460,8 +1585,8 @@ Read(.env)             <span class="comment">// Block reading secrets</span></di
         </div>
     </div>
 
-    <!-- Slide 63: PR Workflow -->
-    <div class="slide" data-slide="63">
+    <!-- Slide 68: PR Workflow -->
+    <div class="slide" data-slide="68">
         <h1>The PR Workflow</h1>
         <div class="how-to-trigger">
             <h4>Ask Claude to Create a PR</h4>
@@ -1475,8 +1600,8 @@ Read(.env)             <span class="comment">// Block reading secrets</span></di
         </div>
     </div>
 
-    <!-- Slide 64: Default Main Agent -->
-    <div class="slide" data-slide="64">
+    <!-- Slide 69: Default Main Agent -->
+    <div class="slide" data-slide="69">
         <h1>Setting a Default Agent</h1>
         <div class="how-to-trigger">
             <h4>Via settings.json</h4>
@@ -1494,8 +1619,8 @@ Read(.env)             <span class="comment">// Block reading secrets</span></di
         </div>
     </div>
 
-    <!-- Slide 65: settings.json -->
-    <div class="slide" data-slide="65">
+    <!-- Slide 70: settings.json -->
+    <div class="slide" data-slide="70">
         <h1>settings.json Overview</h1>
         <div class="trigger-box">
             <h4>Settings Hierarchy</h4>
@@ -1512,8 +1637,8 @@ Read(.env)             <span class="comment">// Block reading secrets</span></di
 managed-settings.json              <span class="comment"># Organization policy (enforced)</span></div>
     </div>
 
-    <!-- Slide 66: Spinner Verbs -->
-    <div class="slide" data-slide="66">
+    <!-- Slide 71: Spinner Verbs -->
+    <div class="slide" data-slide="71">
         <h1>Spinner Verbs</h1>
         <p>Customize the loading messages that appear while Claude thinks:</p>
         <div class="code-block"><span class="comment">// .claude/settings.json</span>
@@ -1531,8 +1656,8 @@ managed-settings.json              <span class="comment"># Organization policy (
 }</div>
     </div>
 
-    <!-- Slide 67: Status Line -->
-    <div class="slide" data-slide="67">
+    <!-- Slide 72: Status Line -->
+    <div class="slide" data-slide="72">
         <h1>Status Line</h1>
         <p>A custom info bar below the composer showing model, context, cost, git branch, etc.</p>
         <div class="how-to-trigger">
@@ -1548,8 +1673,8 @@ managed-settings.json              <span class="comment"># Organization policy (
 }</div>
     </div>
 
-    <!-- Slide 68: Output Styles -->
-    <div class="slide" data-slide="68">
+    <!-- Slide 73: Output Styles -->
+    <div class="slide" data-slide="73">
         <h1>Output Styles</h1>
         <div class="how-to-trigger">
             <h4>Set via /config</h4>
@@ -1563,8 +1688,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 69: Keybindings -->
-    <div class="slide" data-slide="69">
+    <!-- Slide 74: Keybindings -->
+    <div class="slide" data-slide="74">
         <h1>Keybindings</h1>
         <div class="how-to-trigger">
             <h4>Customize Keys</h4>
@@ -1586,8 +1711,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 70: Terminal & Vim -->
-    <div class="slide" data-slide="70">
+    <!-- Slide 75: Terminal & Vim -->
+    <div class="slide" data-slide="75">
         <h1>Terminal Setup &amp; Vim Mode</h1>
         <div class="two-col">
             <div class="col-card">
@@ -1603,8 +1728,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 71: Customization Summary -->
-    <div class="slide" data-slide="71">
+    <!-- Slide 76: Customization Summary -->
+    <div class="slide" data-slide="76">
         <h1>Customization Summary</h1>
         <div class="info-grid">
             <div class="info-card">
@@ -1624,8 +1749,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 72: Debugging Tips -->
-    <div class="slide" data-slide="72">
+    <!-- Slide 77: Debugging Tips -->
+    <div class="slide" data-slide="77">
         <h1>Debugging Tips</h1>
         <div class="use-cases">
             <div class="use-case-item"><span class="use-case-icon">&#129658;</span><div class="use-case-text"><strong>Run /doctor</strong><span>First thing to try when something isn't working</span></div></div>
@@ -1635,8 +1760,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 73: Golden Rules -->
-    <div class="slide" data-slide="73">
+    <!-- Slide 78: Golden Rules -->
+    <div class="slide" data-slide="78">
         <h1>The Golden Rules</h1>
         <div class="use-cases">
             <div class="use-case-item"><span class="use-case-icon">1&#65039;&#8419;</span><div class="use-case-text"><strong>Always start with plan mode</strong><span>For any non-trivial task. Review the plan before Claude writes code.</span></div></div>
@@ -1648,8 +1773,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 74: Resources -->
-    <div class="slide" data-slide="74">
+    <!-- Slide 79: Resources -->
+    <div class="slide" data-slide="79">
         <h1>Resources</h1>
         <div class="use-cases">
             <div class="use-case-item"><span class="use-case-icon">&#128214;</span><div class="use-case-text"><strong>Claude Code Docs</strong><span>code.claude.com/docs/en</span></div></div>
@@ -1659,8 +1784,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 75: Next Steps -->
-    <div class="slide" data-slide="75">
+    <!-- Slide 80: Next Steps -->
+    <div class="slide" data-slide="80">
         <h1>Your Next Steps</h1>
         <div class="use-cases">
             <div class="use-case-item"><span class="use-case-icon">1&#65039;&#8419;</span><div class="use-case-text"><strong>Install &amp; Login</strong><span>Get Claude Code running on your machine today</span></div></div>
@@ -1671,8 +1796,153 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 76: Thank You -->
-    <div class="slide title-slide" data-slide="76">
+    <!-- Slide 81: 60 Slash Commands by Category -->
+    <div class="slide" data-slide="81">
+        <h1>60 Official Slash Commands</h1>
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>Session (8)</h4>
+                <p><code>/btw</code> <code>/clear</code> <code>/compact</code> <code>/exit</code></p>
+                <p><code>/fork</code> <code>/rename</code> <code>/resume</code> <code>/rewind</code></p>
+            </div>
+            <div class="info-card">
+                <h4>Model (4)</h4>
+                <p><code>/fast</code> <code>/model</code> <code>/passes</code> <code>/plan</code></p>
+            </div>
+            <div class="info-card">
+                <h4>Config (10)</h4>
+                <p><code>/config</code> <code>/keybindings</code> <code>/permissions</code></p>
+                <p><code>/privacy-settings</code> <code>/sandbox</code> <code>/statusline</code></p>
+                <p><code>/stickers</code> <code>/terminal-setup</code> <code>/theme</code> <code>/vim</code></p>
+            </div>
+            <div class="info-card">
+                <h4>Context (7)</h4>
+                <p><code>/context</code> <code>/cost</code> <code>/extra-usage</code></p>
+                <p><code>/insights</code> <code>/stats</code> <code>/status</code> <code>/usage</code></p>
+            </div>
+            <div class="info-card">
+                <h4>Extensions (8)</h4>
+                <p><code>/agents</code> <code>/chrome</code> <code>/hooks</code> <code>/ide</code></p>
+                <p><code>/mcp</code> <code>/plugin</code> <code>/reload-plugins</code> <code>/skills</code></p>
+            </div>
+            <div class="info-card">
+                <h4>Project (5)</h4>
+                <p><code>/add-dir</code> <code>/diff</code> <code>/init</code></p>
+                <p><code>/pr-comments</code> <code>/security-review</code></p>
+            </div>
+            <div class="info-card">
+                <h4>Remote (5)</h4>
+                <p><code>/desktop</code> <code>/install-github-app</code> <code>/install-slack-app</code></p>
+                <p><code>/mobile</code> <code>/remote-control</code> <code>/remote-env</code></p>
+            </div>
+            <div class="info-card">
+                <h4>Auth + Debug + Export (13)</h4>
+                <p><code>/login</code> <code>/logout</code> <code>/upgrade</code></p>
+                <p><code>/doctor</code> <code>/feedback</code> <code>/help</code> <code>/release-notes</code> <code>/tasks</code></p>
+                <p><code>/copy</code> <code>/export</code> <code>/memory</code></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 82: Custom Commands Frontmatter -->
+    <div class="slide" data-slide="82">
+        <h1>Custom Commands</h1>
+        <div class="trigger-box">
+            <h4>Key Concept</h4>
+            <p>Commands are markdown files in <code>.claude/commands/</code>. Users invoke them as <code>/command-name</code>. They are the entry point for orchestrated multi-agent workflows.</p>
+        </div>
+        <h3>4 Frontmatter Fields</h3>
+        <div class="use-cases">
+            <div class="use-case-item"><span class="use-case-icon">&#128221;</span><div class="use-case-text"><strong>description</strong><span>What the command does — shown in autocomplete and used for auto-discovery</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128309;</span><div class="use-case-text"><strong>argument-hint</strong><span>Hint shown during autocomplete, e.g. <code>[issue-number]</code> or <code>[filename]</code></span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#128295;</span><div class="use-case-text"><strong>allowed-tools</strong><span>Tools allowed without permission prompts when this command is active</span></div></div>
+            <div class="use-case-item"><span class="use-case-icon">&#129302;</span><div class="use-case-text"><strong>model</strong><span>Model to use when this command runs: <code>haiku</code>, <code>sonnet</code>, or <code>opus</code></span></div></div>
+        </div>
+        <div class="code-block"><span class="comment"># .claude/commands/review-pr.md</span>
+---
+<span class="key">description</span>: <span class="string">Review a GitHub pull request for quality and security</span>
+<span class="key">argument-hint</span>: <span class="string">[pr-number]</span>
+<span class="key">model</span>: <span class="string">opus</span>
+---
+Fetch PR #$ARGUMENTS and review it for code quality,
+security issues, and adherence to our conventions.
+Use the backend-patterns skill for backend changes.</div>
+    </div>
+
+    <!-- Slide 83: Settings Permissions Reference -->
+    <div class="slide" data-slide="83">
+        <h1>Settings: Permissions Reference</h1>
+        <div class="trigger-box">
+            <h4>Permission Structure</h4>
+            <p><code>allow</code> = no prompt. <code>ask</code> = require confirmation. <code>deny</code> = block entirely (highest precedence).</p>
+        </div>
+        <h3>Tool Permission Syntax</h3>
+        <div class="code-block"><span class="comment">// .claude/settings.json</span>
+{
+  <span class="key">"permissions"</span>: {
+    <span class="key">"allow"</span>: [
+      <span class="string">"Edit(*)"</span>,          <span class="comment">// All file edits</span>
+      <span class="string">"Bash(npm run *)"</span>,  <span class="comment">// Any npm script</span>
+      <span class="string">"Bash(git *)"</span>,      <span class="comment">// All git commands</span>
+      <span class="string">"WebFetch(domain:*)"</span>,<span class="comment">// All web fetches</span>
+      <span class="string">"Agent(*)"</span>           <span class="comment">// Spawn any agent</span>
+    ],
+    <span class="key">"ask"</span>: [<span class="string">"Bash(git push *)"</span>],
+    <span class="key">"deny"</span>: [
+      <span class="string">"Read(.env)"</span>,        <span class="comment">// Block .env access</span>
+      <span class="string">"Bash(rm -rf *)"</span>     <span class="comment">// Block destructive cmds</span>
+    ],
+    <span class="key">"additionalDirectories"</span>: [<span class="string">"../shared-libs/"</span>],
+    <span class="key">"defaultMode"</span>: <span class="string">"acceptEdits"</span>
+  }
+}</div>
+        <div class="warning-box">
+            <h4>Remember</h4>
+            <p><code>deny</code> rules have highest safety precedence and cannot be overridden by <code>allow</code> or <code>ask</code> rules at any lower priority level.</p>
+        </div>
+    </div>
+
+    <!-- Slide 84: Settings Environment Variables -->
+    <div class="slide" data-slide="84">
+        <h1>Key Environment Variables</h1>
+        <p>Set via the <code>"env"</code> field in <code>settings.json</code> to avoid wrapper scripts.</p>
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>Authentication</h4>
+                <p><code>ANTHROPIC_API_KEY</code> &mdash; API key</p>
+                <p><code>ANTHROPIC_BASE_URL</code> &mdash; Custom endpoint</p>
+                <p><code>CLAUDE_CODE_USE_BEDROCK</code> &mdash; AWS Bedrock</p>
+                <p><code>CLAUDE_CODE_USE_VERTEX</code> &mdash; Google Vertex AI</p>
+            </div>
+            <div class="info-card">
+                <h4>Model Control</h4>
+                <p><code>ANTHROPIC_MODEL</code> &mdash; Override model</p>
+                <p><code>CLAUDE_CODE_EFFORT_LEVEL</code> &mdash; high/medium/low</p>
+                <p><code>CLAUDE_CODE_SUBAGENT_MODEL</code> &mdash; Subagent model</p>
+                <p><code>CLAUDE_CODE_MAX_TURNS</code> &mdash; Max agentic turns</p>
+            </div>
+            <div class="info-card">
+                <h4>Behavior</h4>
+                <p><code>CLAUDE_AUTOCOMPACT_PCT_OVERRIDE</code> &mdash; Auto-compact threshold (default ~95%)</p>
+                <p><code>BASH_MAX_TIMEOUT_MS</code> &mdash; Bash timeout</p>
+                <p><code>CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR</code> &mdash; Keep cwd between bash calls</p>
+            </div>
+            <div class="info-card">
+                <h4>Disable Features</h4>
+                <p><code>DISABLE_TELEMETRY</code> &mdash; No telemetry</p>
+                <p><code>CLAUDE_CODE_DISABLE_MCP</code> &mdash; No MCP servers</p>
+                <p><code>DISABLE_PROMPT_CACHING</code> &mdash; No caching</p>
+                <p><code>CLAUDE_CODE_DISABLE_AUTO_MEMORY</code> &mdash; No auto-memory</p>
+            </div>
+        </div>
+        <div class="trigger-box">
+            <h4>Total Coverage</h4>
+            <p>Claude Code exposes <strong>55+ settings</strong> and <strong>140+ environment variables</strong> as of v2.1.74. See <code>best-practice/claude-settings.md</code> for the full reference.</p>
+        </div>
+    </div>
+
+    <!-- Slide 85: Thank You -->
+    <div class="slide title-slide" data-slide="85">
         <div class="title-logo">
             <img src="../!/claude-jumping.svg" alt="Claude Code mascot jumping" />
         </div>
