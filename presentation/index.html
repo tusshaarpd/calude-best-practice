@@ -672,8 +672,41 @@ When writing tests for the backend:
         </div>
     </div>
 
-    <!-- Slide 24: Memory Best Practices -->
+    <!-- Slide 24: Monorepo CLAUDE.md Loading -->
     <div class="slide" data-slide="24">
+        <h1>CLAUDE.md Loading in Monorepos</h1>
+        <div class="trigger-box">
+            <h4>Two Loading Mechanisms</h4>
+            <p>Claude Code uses <strong>ancestor loading</strong> (upward at startup) and <strong>descendant lazy loading</strong> (downward on demand).</p>
+        </div>
+        <div class="two-col">
+            <div class="col-card good">
+                <h4>Ancestor Loading (at startup)</h4>
+                <div class="code-block"><span class="comment"># cd /todoapp/frontend && claude</span>
+~/.claude/CLAUDE.md    <span class="comment"># loaded</span>
+/todoapp/CLAUDE.md     <span class="comment"># loaded</span>
+/todoapp/frontend/CLAUDE.md <span class="comment"># loaded</span></div>
+                <p style="margin-top: 8px;">All CLAUDE.md files from <code>cwd</code> up to <code>/</code> are loaded immediately at startup.</p>
+            </div>
+            <div class="col-card">
+                <h4>Descendant Lazy Loading</h4>
+                <div class="code-block"><span class="comment"># cd /todoapp && claude</span>
+/todoapp/frontend/CLAUDE.md  <span class="comment"># NOT loaded at start</span>
+/todoapp/backend/CLAUDE.md   <span class="comment"># NOT loaded at start</span>
+
+<span class="comment"># Only loaded when Claude reads</span>
+<span class="comment"># a file inside that subdirectory</span></div>
+                <p style="margin-top: 8px;">Sibling directories never load each other.</p>
+            </div>
+        </div>
+        <div class="warning-box">
+            <h4>Monorepo Strategy</h4>
+            <p>Put <strong>shared conventions</strong> in the root CLAUDE.md. Put <strong>component-specific instructions</strong> in each subdirectory's CLAUDE.md — they'll lazy-load without polluting sibling contexts.</p>
+        </div>
+    </div>
+
+    <!-- Slide 25: Memory Best Practices -->
+    <div class="slide" data-slide="25">
         <h1>Memory Best Practices</h1>
         <div class="use-cases">
             <div class="use-case-item"><span class="use-case-icon">&#128207;</span><div class="use-case-text"><strong>CLAUDE.md under 150 lines</strong><span>Brief, focused, high-signal instructions</span></div></div>
@@ -1512,8 +1545,8 @@ Read(.env)             <span class="comment">// Block reading secrets</span></di
 managed-settings.json              <span class="comment"># Organization policy (enforced)</span></div>
     </div>
 
-    <!-- Slide 66: Spinner Verbs -->
-    <div class="slide" data-slide="66">
+    <!-- Slide 67: Spinner Verbs -->
+    <div class="slide" data-slide="67">
         <h1>Spinner Verbs</h1>
         <p>Customize the loading messages that appear while Claude thinks:</p>
         <div class="code-block"><span class="comment">// .claude/settings.json</span>
@@ -1531,8 +1564,8 @@ managed-settings.json              <span class="comment"># Organization policy (
 }</div>
     </div>
 
-    <!-- Slide 67: Status Line -->
-    <div class="slide" data-slide="67">
+    <!-- Slide 68: Status Line -->
+    <div class="slide" data-slide="68">
         <h1>Status Line</h1>
         <p>A custom info bar below the composer showing model, context, cost, git branch, etc.</p>
         <div class="how-to-trigger">
@@ -1548,8 +1581,8 @@ managed-settings.json              <span class="comment"># Organization policy (
 }</div>
     </div>
 
-    <!-- Slide 68: Output Styles -->
-    <div class="slide" data-slide="68">
+    <!-- Slide 69: Output Styles -->
+    <div class="slide" data-slide="69">
         <h1>Output Styles</h1>
         <div class="how-to-trigger">
             <h4>Set via /config</h4>
@@ -1563,8 +1596,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 69: Keybindings -->
-    <div class="slide" data-slide="69">
+    <!-- Slide 70: Keybindings -->
+    <div class="slide" data-slide="70">
         <h1>Keybindings</h1>
         <div class="how-to-trigger">
             <h4>Customize Keys</h4>
@@ -1586,8 +1619,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 70: Terminal & Vim -->
-    <div class="slide" data-slide="70">
+    <!-- Slide 71: Terminal & Vim -->
+    <div class="slide" data-slide="71">
         <h1>Terminal Setup &amp; Vim Mode</h1>
         <div class="two-col">
             <div class="col-card">
@@ -1603,8 +1636,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 71: Customization Summary -->
-    <div class="slide" data-slide="71">
+    <!-- Slide 72: Customization Summary -->
+    <div class="slide" data-slide="72">
         <h1>Customization Summary</h1>
         <div class="info-grid">
             <div class="info-card">
@@ -1624,8 +1657,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 72: Debugging Tips -->
-    <div class="slide" data-slide="72">
+    <!-- Slide 73: Debugging Tips -->
+    <div class="slide" data-slide="73">
         <h1>Debugging Tips</h1>
         <div class="use-cases">
             <div class="use-case-item"><span class="use-case-icon">&#129658;</span><div class="use-case-text"><strong>Run /doctor</strong><span>First thing to try when something isn't working</span></div></div>
@@ -1635,8 +1668,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 73: Golden Rules -->
-    <div class="slide" data-slide="73">
+    <!-- Slide 74: Golden Rules -->
+    <div class="slide" data-slide="74">
         <h1>The Golden Rules</h1>
         <div class="use-cases">
             <div class="use-case-item"><span class="use-case-icon">1&#65039;&#8419;</span><div class="use-case-text"><strong>Always start with plan mode</strong><span>For any non-trivial task. Review the plan before Claude writes code.</span></div></div>
@@ -1648,8 +1681,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 74: Resources -->
-    <div class="slide" data-slide="74">
+    <!-- Slide 75: Resources -->
+    <div class="slide" data-slide="75">
         <h1>Resources</h1>
         <div class="use-cases">
             <div class="use-case-item"><span class="use-case-icon">&#128214;</span><div class="use-case-text"><strong>Claude Code Docs</strong><span>code.claude.com/docs/en</span></div></div>
@@ -1659,8 +1692,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 75: Next Steps -->
-    <div class="slide" data-slide="75">
+    <!-- Slide 76: Next Steps -->
+    <div class="slide" data-slide="76">
         <h1>Your Next Steps</h1>
         <div class="use-cases">
             <div class="use-case-item"><span class="use-case-icon">1&#65039;&#8419;</span><div class="use-case-text"><strong>Install &amp; Login</strong><span>Get Claude Code running on your machine today</span></div></div>
@@ -1671,8 +1704,8 @@ managed-settings.json              <span class="comment"># Organization policy (
         </div>
     </div>
 
-    <!-- Slide 76: Thank You -->
-    <div class="slide title-slide" data-slide="76">
+    <!-- Slide 77: Thank You -->
+    <div class="slide title-slide" data-slide="77">
         <div class="title-logo">
             <img src="../!/claude-jumping.svg" alt="Claude Code mascot jumping" />
         </div>
